@@ -36,17 +36,29 @@
 
     <button  class="btn btn-primary" @click="onClickSubmit">Submit</button>
   </form>
+  <h6>Update the inventory</h6>
+  <form>
+    <div class="mb-3">
+      <label for="delta" class="form-label">Delta:</label>
+      <input v-model="delta" type="number" class="form-control" id="delta" >
+    </div>
+    <button  class="btn btn-primary" @click="onUpdateInventory">Update Inventory</button>
+  </form>
+
+
 </template>
 
 <script>
 import Webservice from "@/webservice";
 import Loader from "@/components/Loader";
+import AuthHelper from "@/authHelper";
 
 export default {
   name: "ProductDetail",
   components: {Loader},
   data() {
     return {
+      delta:0,
       loading: false,
       product: null,
     }
@@ -55,18 +67,54 @@ export default {
     productId: String,
   },
   created() {
-    this.loading = true
-    Webservice.getProductByID(this.productId).then((res)=>{
-      this.product = res.data
-      this.loading = false
-    }).catch((err)=> {
-      console.error(err)
-      this.loading = false
-    })
+    this.fetchData()
   },
   methods:{
-    onClickSubmit(){
+    fetchData(){
+      this.loading = true
+      Webservice.getProductByID(this.productId).then((res)=>{
+        this.product = res.data
+        this.loading = false
+      }).catch((err)=> {
+        console.error(err)
+        this.loading = false
+      })
+    },
+    onClickSubmit(e){
+      e.preventDefault()
       // when we update the product
+      AuthHelper.getCurrentUser().then((user)=>{
+        Webservice.updateProduct(user.idToken,this.productId,this.product).then((res)=>{
+          console.log(res)
+          alert("OK")
+          this.fetchData()
+        }).catch((err)=>{
+          console.error(err)
+          alert("Error while updating product")
+        })
+      }).catch((err)=>{
+        // redirect to the login
+        console.error(err)
+        this.$router.push({name:"Login"})
+      })
+    },
+    onUpdateInventory(e){
+      e.preventDefault()
+      // when we update the product
+      AuthHelper.getCurrentUser().then((user)=>{
+        Webservice.updateInventory(user.idToken,this.productId,this.delta).then((res)=>{
+          console.log(res)
+          alert("OK")
+          this.fetchData()
+        }).catch((err)=>{
+          console.error(err)
+          alert("Error while updating product")
+        })
+      }).catch((err)=>{
+        // redirect to the login
+        console.error(err)
+        this.$router.push({name:"Login"})
+      })
     }
   }
 }

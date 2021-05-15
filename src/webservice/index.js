@@ -44,6 +44,27 @@ function checkout(idToken, provider, shippingCountryCode,currency){
     })
 }
 
+function updateProduct(idToken, productId, product){
+    return axios.put(process.env.VUE_APP_API_BASE_URL+"/admin/product/"+productId,product,{
+        headers : {
+            'Authorization': `Bearer ${idToken}`
+        }
+    })
+}
+
+function updateInventory(idToken, productId, delta){
+    return axios.put(process.env.VUE_APP_API_BASE_URL+"/admin/inventory",
+        {
+            productId: productId,
+            delta : delta
+        },
+        {
+        headers : {
+            'Authorization': `Bearer ${idToken}`
+        }
+    })
+}
+
 export default {
     getProducts:getProducts,
     getCategories:getCategories,
@@ -51,4 +72,6 @@ export default {
     addToCart: addToCart,
     getCart:getCart,
     checkout:checkout,
+    updateProduct:updateProduct,
+    updateInventory:updateInventory
 }
