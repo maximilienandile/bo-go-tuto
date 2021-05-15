@@ -2,6 +2,10 @@
 import firebase from "firebase/compat"
 import "firebase/compat/auth"
 
+function signOut(){
+    firebase.auth().signOut()
+}
+
 function getCurrentUser(){
     return new Promise(function (resolve, reject){
         firebase.auth().onAuthStateChanged((user)=>{
@@ -23,5 +27,6 @@ function getCurrentUser(){
 }
 
 export default {
-    getCurrentUser:getCurrentUser
+    getCurrentUser:getCurrentUser,
+    signOut:signOut
 }
