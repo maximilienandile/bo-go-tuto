@@ -30,6 +30,13 @@
               </router-link>
             </li>
           </ul>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <router-link :to="{name:'CreateProduct'}" class="nav-link active" aria-current="page" href="#">
+                Create Product
+              </router-link>
+            </li>
+          </ul>
         </div>
       </nav>
 

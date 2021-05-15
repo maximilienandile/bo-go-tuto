@@ -65,6 +65,14 @@ function updateInventory(idToken, productId, delta){
     })
 }
 
+function createProduct(idToken, product){
+    return axios.post(process.env.VUE_APP_API_BASE_URL+"/admin/products",product,{
+        headers : {
+            'Authorization': `Bearer ${idToken}`
+        }
+    })
+}
+
 export default {
     getProducts:getProducts,
     getCategories:getCategories,
@@ -73,5 +81,6 @@ export default {
     getCart:getCart,
     checkout:checkout,
     updateProduct:updateProduct,
-    updateInventory:updateInventory
+    updateInventory:updateInventory,
+    createProduct:createProduct
 }
